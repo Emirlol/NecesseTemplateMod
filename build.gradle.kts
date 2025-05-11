@@ -26,8 +26,14 @@ repositories {
     }
 }
 
-val homeDir: String = System.getProperty("user.home")
-val gamePath = "$homeDir/.local/share/Steam/steamapps/common/Necesse"
+val homeDir = System.getProperty("user.home") ?: error("Could not find user home directory, please set it manually.")
+val gamePath = "$homeDir/.local/share/Steam/steamapps/common/Necesse" // Path to your game installation. Modify this if necessary.
+
+val clientJar = "$gamePath/Necesse.jar"
+val serverJar = "$gamePath/Server.jar"
+require(file(clientJar).exists()) { error("Necesse client jar not found at the path: $gamePath. Please set the correct game path manually.") }
+require(file(serverJar).exists()) { error("Necesse server jar not found at the path: $gamePath. Please set the correct game path manually.") }
+
 
 dependencies {
     // To change the versions see the gradle.properties file
@@ -36,8 +42,8 @@ dependencies {
 	api(libs.mixinExtras)
 	implementation(libs.fabricLanguageKotlin)
 
-    compileOnly(files("$gamePath/Necesse.jar"))
-//  compileOnly(files("$gamePath/Server.jar")) // For server mods
+	compileOnly(files(clientJar))
+//  compileOnly(files(serverJar)) // For server mods
 }
 
 tasks {
