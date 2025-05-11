@@ -26,13 +26,14 @@ repositories {
     }
 }
 
-val homeDir = System.getProperty("user.home")
+val homeDir: String = System.getProperty("user.home")
 val gamePath = "$homeDir/.local/share/Steam/steamapps/common/Necesse"
 
 dependencies {
     // To change the versions see the gradle.properties file
     implementation(libs.fabricLoader)
     api(libs.spongeMixin)
+	api(libs.mixinExtras)
 	implementation(libs.fabricLanguageKotlin)
 
     compileOnly(files("$gamePath/Necesse.jar"))
