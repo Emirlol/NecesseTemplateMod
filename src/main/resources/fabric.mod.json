@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "${mod_id}",
+	"version": "${version}",
+	"name": "${mod_name}",
+	"description": "Template mod",
+	"authors": [
+		"Rime"
+	],
+	"license": "MIT",
+	"environment": "client",
+	"mixins": [
+		"necessetemplatemod.mixins.json"
+	],
+	"depends": {
+		"necesse": ">=${necesse_version}",
+		"necesse_provider": ">=1.0.0",
+		"fabricloader": ">=${loader_version}",
+		"fabric-language-kotlin": ">=${fabric_language_kotlin_version}"
+	},
+	"entrypoints": {
+		"client": [
+			{
+				"value": "me.rime.necessetemplatemod.NecesseTemplateMod::init",
+				"adapter": "kotlin"
+			}
+		]
+	}
+}

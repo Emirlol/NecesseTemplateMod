@@ -1,0 +1,20 @@
+[versions]
+# Fabric loader
+necesse = "0.32.1"
+fabricLoader = "0.16.14"
+spongeMixin = "0.15.5+mixin.0.8.7"
+# Libraries
+fabricLanguageKotlin = "1.13.2+kotlin.2.1.20" # https://github.com/FabricMC/fabric-language-kotlin/releases
+
+# Plugins
+kotlin = "2.1.20" # Match this to the one above
+
+[libraries]
+fabricLoader = { module = "net.fabricmc:fabric-loader", version.ref = "fabricLoader" }
+spongeMixin = { module = "net.fabricmc:sponge-mixin", version.ref = "spongeMixin" }
+fabricLanguageKotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabricLanguageKotlin" }
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+[bundles]
