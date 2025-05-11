@@ -26,7 +26,8 @@ repositories {
     }
 }
 
-val gamePath = "/home/Rime/.local/share/Steam/steamapps/common/Necesse"
+val homeDir = System.getProperty("user.home")
+val gamePath = "$homeDir/.local/share/Steam/steamapps/common/Necesse"
 
 dependencies {
     // To change the versions see the gradle.properties file
