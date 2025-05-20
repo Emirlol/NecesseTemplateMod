@@ -1,4 +1,4 @@
-package me.rime.necessetemplatemod.mixins;
+package me.rime.templatemod.mixins;
 
 import necesse.StartPlatformClient;
 import org.spongepowered.asm.mixin.Mixin;

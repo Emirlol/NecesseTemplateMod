@@ -1,29 +1,29 @@
 plugins {
 	alias(libs.plugins.kotlin)
 	base
-    `maven-publish`
+	`maven-publish`
 }
 
 version = property("mod_version") as String
 group = property("maven_group") as String
 
 base {
-    archivesName = property("archives_base_name") as String
+	archivesName = property("archives_base_name") as String
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
-    mavenCentral()
-    maven("https://repo.spongepowered.org/maven/") {
-        name = "SpongePowered"
-    }
-    maven("https://maven.fabricmc.net/") {
-        name = "FabricMC"
-    }
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+	mavenCentral()
+	maven("https://repo.spongepowered.org/maven/") {
+		name = "SpongePowered"
+	}
+	maven("https://maven.fabricmc.net/") {
+		name = "FabricMC"
+	}
 }
 
 val homeDir = System.getProperty("user.home") ?: error("Could not find user home directory, please set it manually.")
@@ -36,14 +36,18 @@ require(file(serverJar).exists()) { error("Necesse server jar not found at the p
 
 
 dependencies {
-    // To change the versions see the gradle.properties file
-    implementation(libs.fabricLoader)
-    api(libs.spongeMixin)
+	// To change the versions see the gradle.properties file
+	implementation(libs.fabricLoader)
+	api(libs.spongeMixin)
 	api(libs.mixinExtras)
 	implementation(libs.fabricLanguageKotlin)
 
 	compileOnly(files(clientJar))
 //  compileOnly(files(serverJar)) // For server mods
+}
+
+kotlin {
+	jvmToolchain(17)
 }
 
 tasks {
@@ -66,8 +70,32 @@ tasks {
 			rename { "${it}_${base.archivesName.get()}" }
 		}
 	}
-}
-
-kotlin {
-	jvmToolchain(17)
+	register<Copy>("copyJar") {
+		description = "Copies the resulting mod jar to the mods folder in the game directory."
+		group = "build"
+		dependsOn("jar")
+		from(jar)
+		into("$gamePath/mods")
+	}
+	register<JavaExec>("runClient") {
+		description = "Runs the client from the game path."
+		group = "run"
+		dependsOn("copyJar", "createAppID")
+		workingDir = file(gamePath)
+		environment["__GL_THREADED_OPTIMIZATIONS"] = "0" // Workaround for game crashing on window actions for some nvidia drivers
+		mainClass = "net.fabricmc.loader.launch.knot.KnotClient"
+		classpath = files("$gamePath/lib/*")
+		jvmArgs = listOf("-Dfabric.skipMcProvider=true")
+		doLast {
+			exec()
+		}
+		isIgnoreExitValue = true
+	}
+	register("createAppID") {
+		group = "build"
+		description = "Creates steam_appid.txt file in the game path."
+		val appIdFile = file("$gamePath/steam_appid.txt")
+		if (appIdFile.exists()) didWork = false
+		else doLast { appIdFile.writeText("1169040") }
+	}
 }

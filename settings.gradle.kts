@@ -1,1 +1,1 @@
-rootProject.name = "NecesseTemplateMod"
+rootProject.name = "TemplateMod"

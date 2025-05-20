@@ -10,18 +10,30 @@
 	"license": "MIT",
 	"environment": "client",
 	"mixins": [
-		"necessetemplatemod.mixins.json"
+		"templatemod.mixins.json"
 	],
 	"depends": {
 		"necesse": ">=${necesse_version}",
-		"necesse_provider": ">=1.0.0",
+		"necesse-provider": ">=1.0.0",
 		"fabricloader": ">=${loader_version}",
 		"fabric-language-kotlin": ">=${fabric_language_kotlin_version}"
 	},
 	"entrypoints": {
-		"client": [
+		"preInit": [
 			{
-				"value": "me.rime.necessetemplatemod.NecesseTemplateMod::init",
+				"value": "me.rime.templatemod.TemplateMod::preInit",
+				"adapter": "kotlin"
+			}
+		],
+		"init": [
+			{
+				"value": "me.rime.templatemod.TemplateMod::init",
+				"adapter": "kotlin"
+			}
+		],
+		"postInit": [
+			{
+				"value": "me.rime.templatemod.TemplateMod::postInit",
 				"adapter": "kotlin"
 			}
 		]
